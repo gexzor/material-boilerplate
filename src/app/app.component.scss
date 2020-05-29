@@ -1,0 +1,30 @@
+@import 'colors';
+
+mat-sidenav-container {
+
+    mat-sidenav {
+        width: 272px;
+
+        mat-list {
+
+            a.mat-list-item {
+
+                &:hover {
+                    text-decoration: none;
+                }
+
+                &:before {}
+
+                color: $primary;
+            }
+
+        }
+
+        mat-sidenav-content {
+            width: 100vw;
+            overflow: hidden;
+
+            .outlet-wrapper {}
+        }
+    }
+}

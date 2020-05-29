@@ -1,0 +1,46 @@
+// Import material theming functions
+@import '~@angular/material/theming';
+
+/* 
+* Recursively loops through a map of colors, and appends the color, tone and hex values.
+* in the utility class where it is included into.
+*/
+@mixin color-modifiers($attribute: 'color', $prefix: '-', $postfix: '-', $separator: '-', $base: 'base') {
+
+    @each $name,
+    $color in $colors {
+        &#{$prefix}#{$name} {
+
+            @each $tone,
+            $hex in $color {
+                &#{
+ if($tone !=$base, #{$separator}#{$tone}, ''),
+            }
+
+                {
+                #{$attribute}: $hex#{' !important'};
+            }
+        }
+    }
+}
+}
+
+// Generates utility classes for every color in the passed map '$colors'
+// TODO: fix :hover, :active, etc.
+@mixin generate-helpers($colors) {
+    .text {
+        @include color-modifiers;
+    }
+
+    .border {
+        @include color-modifiers($attribute: 'border-color');
+    }
+
+    .bg {
+        @include color-modifiers($attribute: 'background-color');
+    }
+
+    .bg-hover {
+        @include color-modifiers($attribute: 'background-color', $postfix: ':hover');
+    }
+}

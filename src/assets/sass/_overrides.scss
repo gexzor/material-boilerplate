@@ -1,0 +1,77 @@
+// Material button hover style overwrite
+@mixin mat-button-hover($theme, $primary, $accent, $warn) {
+
+    $foreground-colors: map-get($theme, foreground);
+    $background-colors: map-get($theme, background);
+
+    button.mat-raised-button,
+    button.mat-flat-button,
+    button.mat-icon-button,
+    button.mat-fab,
+    button.mat-mini-fab {
+        overflow: hidden;
+        box-sizing: border-box !important;
+
+        .mat-button-focus-overlay {
+            opacity: .04;
+        }
+    }
+
+    // Replaces outlines with theme colored box-shadows
+    button:focus {
+        outline: none;
+        box-shadow: 0 0 0 1px mat-color($foreground-colors, text);
+
+        &.mat-primary {
+            box-shadow: 0 0 0 1px mat-color($primary, default);
+        }
+
+        &.mat-accent {
+            box-shadow: 0 0 0 1px mat-color($accent, default);
+        }
+
+        &.mat-warn {
+            box-shadow: 0 0 0 1px mat-color($warn, default);
+        }
+    }
+}
+
+// Customized Angular Material SnackBar
+@mixin mat-snackbar-overrides($theme, $theme-primary, $theme-accent, $theme-warn) {
+    snack-bar-container {
+
+        &.snackbar-primary,
+        &.snackbar-success,
+        &.snackbar-warn,
+        &.snackbar-info {
+            .mat-simple-snackbar {
+                justify-content: center;
+            }
+        }
+
+        &.snackbar-primary {
+            background-color: mat-color($theme-primary);
+        }
+
+        &.snackbar-accent {
+            background-color: mat-color($theme-accent);
+        }
+
+        &.snackbar-warn {
+            background-color: mat-color($theme-warn);
+        }
+
+        &.snackbar-success {
+            background-color: mat-color($theme-success);
+        }
+
+        //&.snackbar-info {}
+    }
+}
+
+// Angular Material sidenav backdrop shadow removed
+@mixin mat-sidenav-overrides($theme, $theme-primary, $theme-accent, $theme-warn) {
+    .mat-drawer-backdrop.mat-drawer-shown {
+        background-color: transparent;
+    }
+}

@@ -1,0 +1,33 @@
+// Import material theming functions
+@import '~@angular/material/theming';
+@import 'helpers';
+@import 'palettes';
+
+// Theme color palettes
+$theme-primary: mat-palette($mat-indigo);
+$theme-accent: mat-palette($mat-pink, A200, A100, A400);
+$theme-warn: mat-palette($mat-red);
+$theme-success: mat-palette($light-green);
+$theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+
+// List of palettes
+$palettes: (theme-primary: $theme-primary, theme-accent: $theme-accent, theme-warn: $theme-warn, theme-success: $theme-success);
+
+// Color variables
+// TODO: Maybe these should be removed?
+$primary: mat-color($theme-primary);
+$accent: mat-color($theme-accent);
+$warn: mat-color($theme-warn);
+$success: mat-color($theme-success);
+
+// List of colors
+// TODO: Add hover, focus, disabled, etc.
+$colors: (primary: (base: $primary, lighter: mat-color($theme-primary, lighter), darker: mat-color($theme-primary, darker)),
+    accent: (base: $accent, lighter: mat-color($theme-accent, lighter), darker: mat-color($theme-accent, darker)),
+    warn: (base: $warn, lighter: mat-color($theme-warn, lighter), darker: mat-color($theme-warn, darker)),
+    success: (base: $success, lighter: mat-color($theme-success, lighter), darker: mat-color($theme-success, darker)),
+);
+
+
+// Generate helper classes for the color list
+@include generate-helpers($colors);

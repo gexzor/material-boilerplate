@@ -1,0 +1,20 @@
+/**
+ * Iterates the parent map and compares values. 
+ * Each key from child map that isn't present is then added
+ */
+@function concat($parent-map, $child-map) {
+    $result: $parent-map;
+
+    @each $key,
+    $value in $child-map {
+        @if (not map-has-key($result, $key)) or (type-of(map-get($result, $key)) !=type-of($value)) or (not (type-of(map-get($result, $key))==map and type-of($value)==map)) {
+            $result: map-merge($result, ($key: $value));
+        }
+
+        @else {
+            $result: map-merge($result, ($key: concat(map-get($result, $key), $value)));
+        }
+    }
+
+    @return $result;
+}

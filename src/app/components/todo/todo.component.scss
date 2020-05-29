@@ -1,0 +1,68 @@
+@import 'colors';
+
+form {
+    mat-form-field {
+        min-width: 500px;
+        max-width: 750px;
+        text-align: center;
+    }
+
+    button {
+        max-width: 128px;
+    }
+}
+
+.todo-item {
+    cursor: pointer;
+
+    span {
+        position: relative;
+        font-size: 32px;
+        font-weight: 100;
+        font-style: italic;
+        // Prevents text selection when toggling status
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+
+        .checkmark {
+            position: absolute;
+            left: -32px;
+            top: 8px;
+            height: 32px;
+            width: 32px;
+        }
+
+        button {
+            position: absolute;
+            right: -40px;
+            top: 0;
+            transform: scale(.5);
+        }
+    }
+
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slide-left {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
