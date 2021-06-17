@@ -58,7 +58,6 @@ export class TodoService {
      * @param `Todo` A copy of the todo, which should replace the current.
      */
     public updateTodo(todo: Todo): void {
-        console.log(todo.status);
         this.afs.collection('todos')
             .doc(todo.id)
             .update(todo);
