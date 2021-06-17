@@ -1,15 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Todo, TodoStatus } from 'src/app/models/Todo';
+import { AnimationService } from 'src/app/services/animation.service';
 import { SnackbarColor, SnackbarService } from 'src/app/services/snackbar.service';
 import { TodoService } from 'src/app/services/todo.service';
+import { listAnimation, listItemAnimation, navigateUp, scaleInOut } from 'src/assets/animations/animations';
 
 @Component({
     selector: 'app-todo',
     templateUrl: './todo.component.html',
-    styleUrls: ['./todo.component.scss']
+    styleUrls: ['./todo.component.scss'],
+    animations: [
+        scaleInOut,
+        listAnimation,
+        listItemAnimation,
+        navigateUp,
+    ],
 })
 
 export class TodoComponent implements OnInit {
@@ -18,23 +26,24 @@ export class TodoComponent implements OnInit {
     public statusType: typeof TodoStatus = TodoStatus;
     public colorType: typeof SnackbarColor = SnackbarColor;
     public selectedTodo: Todo;
+    public selectedTodoElement: HTMLElement;
     public todos$: Observable<Todo[]>;
     public filteredTodos$: Observable<Todo[]>;
     public todoForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
     });
+    public isTitleValid = false;
 
     constructor(
         public snackbarService: SnackbarService,
+        public animationService: AnimationService,
         private todoService: TodoService,
     ) { }
 
     ngOnInit() {
         this.todos$ = this.todoService.getTodos();
-        this.filteredTodos$ = this.todoForm.controls.title.valueChanges.pipe(
-            startWith(''),
-            map((value: string) => this.filterTodos(value)),
-        );
+        this.todoForm.controls.title.valueChanges
+            .subscribe((title: string): void => this.validateTitle(title));
     }
 
     /**
@@ -75,6 +84,7 @@ export class TodoComponent implements OnInit {
                 snackBarColor = this.colorType.success;
 
         this.todoService.updateTodo(todo);
+        this.animationService.pulsate(this.selectedTodoElement);
         this.snackbarService.displaySnack(snackMessage, snackBarColor, 2000);
     }
 
@@ -92,12 +102,14 @@ export class TodoComponent implements OnInit {
      * Cycles the status of the clicked todo.
      * @param todo The todo which is being deleted.
      */
-    public switchStatus(todo: Todo): void {
+    public switchStatus(todo: Todo, target: HTMLElement): void {
         todo.status === TodoStatus.DO ? todo.status = TodoStatus.DOING :
             todo.status === TodoStatus.DOING ? todo.status = TodoStatus.DONE :
                 todo.status = TodoStatus.DO;
-    }
 
+        if (target.classList.contains('todo-content')) this.selectedTodoElement = target.parentElement;
+        else this.selectedTodoElement = target;
+    }
 
     /**
      * Filters the list of todos by description via the provided text input.
@@ -105,11 +117,26 @@ export class TodoComponent implements OnInit {
      */
     public filterTodos(value: string): Todo[] {
         const filterValue = this._normalizeValue(value);
-        // return this.todos$.pipe(
-        //     map((todos: Todo[]) => todos.filter((todo: Todo[]) => this._normalizeValue(todo.title).includes(filterValue))
-        // )
+        let filterResults = new Array<Todo>();
+        this.todos$.pipe(
+            map((todos: Todo[]) => {
+                return todos.filter((todo: Todo) => this._normalizeValue(todo.title).includes(filterValue));
+            }))
+            .subscribe((todos: Todo[]) => filterResults = todos);
+        console.log(filterResults);
+        return filterResults;
+    }
 
-        return;
+    /**
+     * Checks if the title of the todo already exists or not.
+     * @param title The title of the todo being checked.
+     */
+    public validateTitle(title: string): void {
+        this.todos$.pipe(first())
+            .subscribe((todos: Todo[]): void => {
+                this.isTitleValid = !!!todos.find((todo: Todo) => todo.title === title);
+                console.log(this.isTitleValid);
+            });
     }
 
     /**

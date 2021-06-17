@@ -9,26 +9,25 @@
                placeholder="Create or filter todos"
                aria-label="Todo"
                matInput
-               (keyup)="filterTodos(todoForm.controls.title.value)"
                formControlName="title">
     </mat-form-field>
     <button mat-stroked-button
             type="submit"
-            [disabled]="!todoForm.valid"
+            [disabled]="!todoForm.valid || isTitleValid === false"
             color="accent">Add todo</button>
 </form>
 
 <div class="todo-list text-center">
     <div class="todo-item mb-4"
-         *ngFor="let todo of filteredTodos$ | async"
+         *ngFor="let todo of todos$ | async"
          [ngClass]="{ 'status-do' : todo.status === statusType.DO, 'status-doing' : todo.status === statusType.DOING, 'status-done' : todo.status === statusType.DONE }"
-         (click)="switchStatus(todo)"
+         (click)="switchStatus(todo, $event.target)"
          (mouseover)="selectedTodo = todo"
          (mouseleave)="selectedTodo = null"
          appDebounceClick
          (debounceClick)="updateTodo(todo)"
          [debounceTime]="700">
-        <span
+        <span class="todo-content"
               [ngClass]="{ 'text-primary-lighter' : todo.status === statusType.DO, 'text-primary' : todo.status === statusType.DOING, 'text-success' : todo.status === statusType.DONE }">
             <mat-icon class="checkmark"
                       *ngIf="todo.status === statusType.DONE">

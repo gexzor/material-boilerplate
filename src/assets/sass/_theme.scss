@@ -21,10 +21,13 @@
 @include angular-material-theme($theme);
 
 // Mixin to include the material theme overrides.
-@mixin material-overrides($theme, $theme-primary, $theme-accent, $theme-warn) {
-    @include mat-button-hover($theme, $theme-primary, $theme-accent, $theme-warn);
-    @include mat-snackbar-overrides($theme, $theme-primary, $theme-accent, $theme-warn);
-    @include mat-sidenav-overrides($theme, $theme-primary, $theme-accent, $theme-warn);
+// TODO include the various colors via a list 
+@mixin material-overrides($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success) {
+  @include mat-button-hover($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);
+  @include mat-button-focus($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);
+  @include mat-button-success-variant($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);
+  @include mat-snackbar-overrides($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);
+  @include mat-sidenav-overrides($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);
 }
 
-@include material-overrides($theme, $theme-primary, $theme-accent, $theme-warn);
+@include material-overrides($theme, $theme-primary, $theme-accent, $theme-warn, $theme-success);

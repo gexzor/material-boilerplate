@@ -1,77 +1,111 @@
 // Material button hover style overwrite
-@mixin mat-button-hover($theme, $primary, $accent, $warn) {
+@mixin mat-button-hover($theme, $primary, $accent, $warn, $success) {
+  $foreground-colors: map-get($theme, foreground);
+  $background-colors: map-get($theme, background);
 
-    $foreground-colors: map-get($theme, foreground);
-    $background-colors: map-get($theme, background);
+  button.mat-raised-button,
+  button.mat-flat-button,
+  button.mat-icon-button,
+  button.mat-fab,
+  button.mat-mini-fab {
+    box-sizing: border-box !important;
 
-    button.mat-raised-button,
-    button.mat-flat-button,
-    button.mat-icon-button,
-    button.mat-fab,
-    button.mat-mini-fab {
-        overflow: hidden;
-        box-sizing: border-box !important;
-
-        .mat-button-focus-overlay {
-            opacity: .04;
-        }
+    .mat-button-focus-overlay {
+      opacity: .04;
     }
-
-    // Replaces outlines with theme colored box-shadows
-    button:focus {
-        outline: none;
-        box-shadow: 0 0 0 1px mat-color($foreground-colors, text);
-
-        &.mat-primary {
-            box-shadow: 0 0 0 1px mat-color($primary, default);
-        }
-
-        &.mat-accent {
-            box-shadow: 0 0 0 1px mat-color($accent, default);
-        }
-
-        &.mat-warn {
-            box-shadow: 0 0 0 1px mat-color($warn, default);
-        }
-    }
+  }
 }
+
+// Material button focus style overwrite
+@mixin mat-button-focus($theme, $primary, $accent, $warn, $success) {
+  $foreground-colors: map-get($theme, foreground);
+  $background-colors: map-get($theme, background);
+
+  // Replaces outlines with theme colored box-shadows
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px mat-color($foreground-colors, text);
+
+    &.mat-primary {
+      box-shadow: 0 0 0 1px mat-color($primary, default);
+    }
+
+    &.mat-accent {
+      box-shadow: 0 0 0 1px mat-color($accent, default);
+    }
+
+    &.mat-warn {
+      box-shadow: 0 0 0 1px mat-color($warn, default);
+    }
+  }
+}
+
+
+// Customized Angular Material Button success variant
+@mixin mat-button-success-variant($theme, $primary, $accent, $warn, $success) {
+
+  // Buttons
+  button.mat-button-base,
+  button.mat-raised-button,
+  button.mat-flat-button,
+  button.mat-icon-button,
+  button.mat-fab,
+  button.mat-mini-fab {
+    &.mat-success {
+      // Success colored text
+      color: mat-color($success);
+
+      // Success colored background on hover
+      .mat-button-focus-overlay {
+        background-color: mat-color($success);
+      }
+
+      // Replaces outlines with success colored box-shadows
+      &:focus {
+        box-shadow: 0 0 0 1px mat-color($success, default);
+      }
+    }
+  }
+}
+
 
 // Customized Angular Material SnackBar
-@mixin mat-snackbar-overrides($theme, $theme-primary, $theme-accent, $theme-warn) {
-    snack-bar-container {
+@mixin mat-snackbar-overrides($theme, $primary, $accent, $warn, $success) {
+  snack-bar-container {
 
-        &.snackbar-primary,
-        &.snackbar-success,
-        &.snackbar-warn,
-        &.snackbar-info {
-            .mat-simple-snackbar {
-                justify-content: center;
-            }
-        }
-
-        &.snackbar-primary {
-            background-color: mat-color($theme-primary);
-        }
-
-        &.snackbar-accent {
-            background-color: mat-color($theme-accent);
-        }
-
-        &.snackbar-warn {
-            background-color: mat-color($theme-warn);
-        }
-
-        &.snackbar-success {
-            background-color: mat-color($theme-success);
-        }
-
-        //&.snackbar-info {}
+    &.snackbar-primary,
+    &.snackbar-success,
+    &.snackbar-warn,
+    &.snackbar-info {
+      .mat-simple-snackbar {
+        justify-content: center;
+      }
     }
+
+    &.snackbar-primary {
+      background-color: mat-color($primary);
+    }
+
+    &.snackbar-accent {
+      background-color: mat-color($accent);
+    }
+
+    &.snackbar-warn {
+      background-color: mat-color($warn);
+    }
+
+    &.snackbar-success {
+      background-color: mat-color($success);
+    }
+
+    //&.snackbar-info {} Maybe?
+  }
 }
 
+
 // Angular Material sidenav backdrop shadow removed
-@mixin mat-sidenav-overrides($theme, $theme-primary, $theme-accent, $theme-warn) {
-    .mat-drawer-backdrop.mat-drawer-shown {
-        background-color: transparent;
-    }
+@mixin mat-sidenav-overrides($theme, $primary, $accent, $warn, $success) {
+  .mat-drawer-backdrop.mat-drawer-shown {
+    background-color: transparent;
+  }
 }
